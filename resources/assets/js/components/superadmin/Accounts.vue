@@ -116,6 +116,7 @@
           <v-container grid-list-md>
             <v-layout row wrap>
               <v-flex xs12 sm6>
+                <!-- :error-messages="form.errors.get('name')" -->
                 <v-text-field
                   hint='Escribe el nombre de la cuenta.'
                   label='Nombre*'
@@ -144,7 +145,7 @@
                   name='key'
                   prepend-icon='vpn_key'
                   v-model='form.key'
-                  :counter='8'
+                  :counter='16'
                   :error-messages="form.errors.get('key')"
                 ></v-text-field>
               </v-flex>
@@ -155,6 +156,7 @@
                   :items='accountTypes'
                   item-text='text'
                   item-value='value'
+                  :error-messages="form.errors.get('type')"
                 ></v-select>
               </v-flex>
               <v-flex xs12>
@@ -162,11 +164,11 @@
                   hint='Agrega una nota asociada a la cuenta.'
                   label='Nota (opcional)'
                   multi-line
-                  name='key'
+                  name='note'
                   prepend-icon='fa-sticky-note-o'
-                  v-model='form.key'
-                  :counter='50'
-                  :error-messages="form.errors.get('key')"
+                  v-model='form.note'
+                  :counter='255'
+                  :error-messages="form.errors.get('note')"
                 ></v-text-field>
               </v-flex>
             </v-layout>
@@ -182,7 +184,7 @@
             <v-icon class="subheading red--text text--lighten-3 mr-2">fa-close</v-icon>
             Cancelar
           </v-btn>
-          <v-btn class="green--text text--lighten-3" flat>
+          <v-btn class="green--text text--lighten-3" flat @click.prevent="submit">
             <v-icon class="subheading green--text text--lighten-3 mr-2">fa-save</v-icon>
             Guardar
           </v-btn>
@@ -196,7 +198,7 @@
 <script>
 
 import {Table} from '../../classes.js'
-import {Form} from '../../vue-forms/vue-forms.js'
+import {Form} from '../../form-handler.js'
 
 const account = {
   id: 1,
@@ -259,6 +261,11 @@ export default {
       }
 
       return this.items
+    }
+  },
+  methods: {
+    submit() {
+      this.form.submit('post', '/superadmin/cuentas')
     }
   }
 }
