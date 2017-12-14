@@ -4,14 +4,14 @@
     <v-card-title class="pt-4">
       <v-layout class="" row>
         <v-avatar tile class="mr-3 grey lighten-2" size="120px">
-          <img :src="item.image" :alt="'Logo de '+item.name">
+          <img :src="item.avatar" :alt="'Logo de '+item.name">
         </v-avatar>
         <v-layout class="mr-1 ma-0" column>
 
           <h1 class="mb-2 pr-4 title grey--text text--lighten-1">{{ item.name }}</h1>
 
           <div>
-            <v-chip label class="ml-0 caption" :color="typeColor(item.type)" text-color="white" small>{{item.type}}</v-chip>
+            <v-chip label class="ml-0 caption" :color="typeColor(item.type)" text-color="white" small>{{typeName(item.type)}}</v-chip>
           </div>
           <div>
             <v-divider class="mt-1 mb-1"></v-divider>
@@ -68,17 +68,32 @@ export default {
   methods: {
     typeColor(type) {
       switch(type) {
-        case 'Basic':
-            return 'cyan'
+        case 1:
+            return 'teal'
             break
-        case 'Standard':
+        case 2:
             return 'blue'
             break
-        case 'Premium':
+        case 3:
             return 'orange'
             break
         default:
             return 'grey'
+      }
+    },
+    typeName(type) {
+      switch(type) {
+        case 1:
+            return 'Básica'
+            break
+        case 2:
+            return 'Normal'
+            break
+        case 3:
+            return 'Premium'
+            break
+        default:
+            return 'N/A'
       }
     },
     onResize() {
