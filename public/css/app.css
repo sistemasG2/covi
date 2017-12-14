@@ -1,4 +1,4 @@
-.black {
+@import url(https://fonts.googleapis.com/css?family=Raleway);.black {
   background-color: #000 !important;
   border-color: #000 !important;
 }
@@ -11777,5 +11777,19 @@ table.table tfoot tr {
   .tooltip .tooltip__content {
     padding: 10px 16px;
   }
+}* {
+  font-family: 'Raleway', sans-serif;
+}
+
+.align-items--center {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.justify-content--center {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
