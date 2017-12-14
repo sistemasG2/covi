@@ -57,10 +57,10 @@ return [
 
         's3' => [
             'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
+            'key' => env('AKIAI3OVHHC3CQ2ENZ6Q'),
+            'secret' => env('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'),
+            'region' => env('us-east-1'),
+            'bucket' => env('coviapp'),
         ],
 
     ],

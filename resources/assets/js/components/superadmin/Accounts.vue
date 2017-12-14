@@ -115,6 +115,12 @@
         <form class="pa-3" @submit.stop='submit' @keydown="form.errors.clear($event.target.name)">
           <v-container grid-list-md>
             <v-layout row wrap>
+              <v-flex xs12>
+                <v-icon class="grey--text mr-3">face</v-icon>
+                <label for="avatar" class="subheading grey--text">Avatar</label>
+                <br>
+                <input type="file" accept="image/*">
+              </v-flex>
               <v-flex xs12 sm6>
                 <v-text-field
                   hint='Escribe el nombre de la cuenta.'
@@ -225,7 +231,7 @@ export default {
       ]),
       toggleViewOptions: 0,
       search: '',
-      showModal: false
+      showModal: true
     }
   },
   computed: {
@@ -271,7 +277,7 @@ export default {
         .catch(err => {
           alert('Error al obtener datos del servidor.')
         })
-    }
+    },
   },
   beforeMount() {
     this.loadItems()
