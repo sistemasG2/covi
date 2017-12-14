@@ -112,11 +112,10 @@
         </v-layout>
         <v-divider></v-divider>
         <!-- FORM -->
-        <v-form class="pa-3" @submit.stop='submit'>
+        <form class="pa-3" @submit.stop='submit' @keydown="form.errors.clear($event.target.name)">
           <v-container grid-list-md>
             <v-layout row wrap>
               <v-flex xs12 sm6>
-                <!-- :error-messages="form.errors.get('name')" -->
                 <v-text-field
                   hint='Escribe el nombre de la cuenta.'
                   label='Nombre*'
@@ -156,6 +155,7 @@
                   :items='accountTypes'
                   item-text='text'
                   item-value='value'
+                  v-model="form.type"
                   :error-messages="form.errors.get('type')"
                 ></v-select>
               </v-flex>
@@ -173,14 +173,14 @@
               </v-flex>
             </v-layout>
           </v-container>
-        </v-form>
+        </form>
         <v-divider></v-divider>
         <v-layout class="pa-1 pr-3 pl-3">
-          <v-btn color='grey' flat icon>
+          <v-btn color='grey' flat icon @click="form.reset()">
             <v-icon>refresh</v-icon>
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn class="red--text text--lighten-3" flat>
+          <v-btn class="red--text text--lighten-3" flat @click="form.reset(), showModal =!showModal">
             <v-icon class="subheading red--text text--lighten-3 mr-2">fa-close</v-icon>
             Cancelar
           </v-btn>
@@ -200,32 +200,21 @@
 import {Table} from '../../classes.js'
 import {Form} from '../../form-handler.js'
 
-const account = {
-  id: 1,
-  name: 'Condominio Santa Clara',
-  type: 'Standard',
-  key: 'sclara789456',
-  company: 'Naret S.A.',
-  notes: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco Eduardo laboris nisi ut aliquip ex ea commodo consequat.',
-  image: 'http://propiedades.com.co/wp-content/uploads/2013/12/CONDOMINIO-SANTA-CLARA-logo-300-x-250-px-11.jpg'
-}
-
 export default {
   data() {
     return {
       accountTypes: [
-        {text: 'Básico', value: 'basic'},
-        {text: 'Normal', value: 'normal'},
-        {text: 'Premium', value: 'premium'}
+        {text: 'Básico', value: 1},
+        {text: 'Normal', value: 2},
+        {text: 'Premium', value: 3}
       ],
-      //items: Array(15).fill(account),
       items: [],
       form: new Form({
         name: '',
         company: '',
         key: '',
         type: '',
-        notes: '',
+        note: '',
       }),
       table: new Table([
           { text: 'Id', align: 'left', value: 'id' },
@@ -246,10 +235,13 @@ export default {
 
         for (var i = 0; i < this.items.length; i++) {
           let verified = false
-          Object.keys(this.items[i]).some(value => {
-            let content = this.items[i][value].toString().toLowerCase()
-            if (content.includes(this.search.toLowerCase())) {
-              verified = true
+          Object.keys(this.items[i]).some(prop => {
+            let item = this.items[i][prop]
+            if (item) {
+              let content = item.toString().toLowerCase()
+              if (content.includes(this.search.toLowerCase())) {
+                verified = true
+              }
             }
           })
           if (verified == true) {
@@ -265,8 +257,24 @@ export default {
   },
   methods: {
     submit() {
-      this.form.submit('post', '/superadmin/cuentas')
+      this.form.submit('post', '/cuentas')
+        .then(res => {
+          this.showModal = false
+          this.loadItems()
+        })
+    },
+    loadItems() {
+      axios.get('/cuentas')
+        .then(res => {
+          this.items = res.data
+        })
+        .catch(err => {
+          alert('Error al obtener datos del servidor.')
+        })
     }
+  },
+  beforeMount() {
+    this.loadItems()
   }
 }
 </script>
