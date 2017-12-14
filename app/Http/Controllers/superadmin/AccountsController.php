@@ -25,6 +25,7 @@ class AccountsController extends Controller
           'user' => $this->user
         ]);
     }
+    
 
     /**
      * Store a newly created resource in storage.
