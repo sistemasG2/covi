@@ -18,8 +18,10 @@ class CreateAccountsTable extends Migration
             $table->timestamps();
             $table->string('name', 20)->unique();
             $table->string('company', 20);
-            $table->integer('account_type')->unsigned();
-            $table->string('note', 255);
+            $table->string('key', 16)->unique();
+            $table->integer('type')->unsigned();
+            $table->string('avatar');
+            $table->string('note', 255)->nullable();
         });
     }
 
