@@ -36,14 +36,14 @@
           </v-list-tile-title>
         </v-list-tile>
 
-        <v-list-tile @click="">
+        <v-list-tile @click="parentModal('edit', item)">
           <v-list-tile-title class="green--text text--lighten-2  body-1">
             <v-icon class="green--text text--lighten-2 body-1 mr-1">fa-pencil</v-icon>
             Editar
           </v-list-tile-title>
         </v-list-tile>
 
-        <v-list-tile @click="">
+        <v-list-tile @click="parentModal('delete', item)">
           <v-list-tile-title class="red--text text--lighten-2  body-1">
             <v-icon class="red--text text--lighten-2 body-1 mr-1">fa-trash-o</v-icon>
             Eliminar
@@ -95,6 +95,9 @@ export default {
         default:
             return 'N/A'
       }
+    },
+    parentModal(action, id, item = null) {
+      this.$parent.openModal(action, id, item)
     },
     onResize() {
       this.windowWidth = window.innerWidth
