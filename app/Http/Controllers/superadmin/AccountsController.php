@@ -23,7 +23,7 @@ class AccountsController extends Controller
      */
     public function index()
     {
-      $accounts = Account::select('name', 'company', 'key', 'note', 'type', 'avatar')->get();
+      $accounts = Account::select('id', 'name', 'company', 'key', 'note', 'type', 'avatar')->orderBy('name', 'asc')->get();
 
       return $accounts;
     }
@@ -45,10 +45,12 @@ class AccountsController extends Controller
         ], [
           'name.required' => 'El campo nombre es obligatorio.',
           'name.max' => 'El nombre no debe tener más de 20 caracteres.',
+          'name.unique' => 'Ya existe una cuenta con este nombre.',
           'company.required' => 'El campo empresa es obligatorio.',
           'name.max' => 'La empresa no debe tener más de 20 caracteres.',
           'key.required' => 'El campo clave es obligatorio.',
           'key.max' => 'La clave no debe ser de más de 16 caracteres.',
+          'key.unique' => 'Ya hay una clave de cuenta igual.',
           'type.required' => 'El campo tipo de cuenta es obligatorio.',
           'note.max' => 'Las notas no debe superar 255 caracteres.'
         ]);
@@ -85,7 +87,52 @@ class AccountsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+      $account = Account::find($id);
+
+      if ($account->key != $request->key) {
+        $request->validate([
+          'key' => 'unique:accounts'
+        ], [
+          'key.unique' => 'Ya hay una clave de cuenta igual.'
+        ]);
+      }
+
+      if ($account->name != $request->name) {
+        $request->validate([
+          'name' => 'unique:accounts'
+        ], [
+          'name.unique' => 'Ya existe una cuenta con este nombre.'
+        ]);
+      }
+
+      $request->validate([
+        'name' => 'required|max:20',
+        'company' => 'required|max:20',
+        'key' => 'required|max:16',
+        'type' => 'required',
+        'note' => 'max:255'
+      ], [
+        'name.required' => 'El campo nombre es obligatorio.',
+        'name.max' => 'El nombre no debe tener más de 20 caracteres.',
+        'company.required' => 'El campo empresa es obligatorio.',
+        'name.max' => 'La empresa no debe tener más de 20 caracteres.',
+        'key.required' => 'El campo clave es obligatorio.',
+        'key.max' => 'La clave no debe ser de más de 16 caracteres.',
+        'type.required' => 'El campo tipo de cuenta es obligatorio.',
+        'note.max' => 'Las notas no debe superar 255 caracteres.'
+      ]);
+
+      $account->update([
+        'name' => $request->name,
+        'company' => $request->company,
+        'key' => $request->key,
+        'type' => $request->type,
+        'avatar' => 'https://loremflickr.com/400/400/profile',
+        'note' => $request->note
+      ]);
+
+      return ['message' => 'La cuenta de '.$request->name.' ha sido actualizada.'];
     }
 
     /**
@@ -96,6 +143,9 @@ class AccountsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $account = Account::find($id);
+        $account->delete();
+
+        return ['message' => 'La cuenta de '.$account->name.' ha sido eliminada.'];
     }
 }
