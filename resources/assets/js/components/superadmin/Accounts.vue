@@ -5,7 +5,7 @@
     <v-layout class="grey--text mt-2 mb-2">
       <h1>Cuentas <span class="hidden-sm-and-down">de clientes</span></h1>
       <v-spacer></v-spacer>
-      <v-btn class="ma-0" color="blue-grey" @click.prevent='showModal = !showModal'>
+      <v-btn class="ma-0" color="blue-grey" @click="openModal('create')">
         nueva
       </v-btn>
     </v-layout>
@@ -88,6 +88,7 @@
       </v-data-table>
     </section>
 
+    <!-- No Results -->
     <section v-else class="pt-5 pb-5 full-height text-xs-center">
       <h1 class="grey--text display-2">No hay resultados...</h1>
       <p class="grey--text mt-4">
@@ -97,16 +98,16 @@
 
     <!-- MODALS -->
     <v-dialog
-      v-model='showModal'
+      v-model='modal.show'
       max-width="600px"
       persistent
     >
-      <v-card>
+      <v-card v-if="modal.create == true || modal.edit == true">
         <!-- Heading -->
         <v-layout class="pa-1 pl-3 align-center">
-          <h3 class="subheading grey--text">Crear nueva cuenta</h3>
+          <h3 class="subheading grey--text">{{ modal.text }} cuenta</h3>
           <v-spacer></v-spacer>
-          <v-btn color='grey' flat icon @click.prevent='showModal = !showModal'>
+          <v-btn color='grey' flat icon @click.prevent='modal.show = !modal.show'>
             <v-icon>close</v-icon>
           </v-btn>
         </v-layout>
@@ -115,12 +116,6 @@
         <form class="pa-3" @submit.stop='submit' @keydown="form.errors.clear($event.target.name)">
           <v-container grid-list-md>
             <v-layout row wrap>
-              <v-flex xs12>
-                <v-icon class="grey--text mr-3">face</v-icon>
-                <label for="avatar" class="subheading grey--text">Avatar</label>
-                <br>
-                <input type="file" accept="image/*">
-              </v-flex>
               <v-flex xs12 sm6>
                 <v-text-field
                   hint='Escribe el nombre de la cuenta.'
@@ -182,17 +177,44 @@
         </form>
         <v-divider></v-divider>
         <v-layout class="pa-1 pr-3 pl-3">
-          <v-btn color='grey' flat icon @click="form.reset()">
+          <v-btn v-if="modal.create" color='grey' flat icon @click="form.reset()">
             <v-icon>refresh</v-icon>
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn class="red--text text--lighten-3" flat @click="form.reset(), showModal =!showModal">
+          <v-btn class="red--text text--lighten-3" flat @click="form.reset(), modal.show = false">
             <v-icon class="subheading red--text text--lighten-3 mr-2">fa-close</v-icon>
             Cancelar
           </v-btn>
-          <v-btn class="green--text text--lighten-3" flat @click.prevent="submit">
+          <v-btn class="green--text text--lighten-3" flat @click.prevent="(modal.create) ? submit('create') : submit('edit')">
             <v-icon class="subheading green--text text--lighten-3 mr-2">fa-save</v-icon>
             Guardar
+          </v-btn>
+        </v-layout>
+      </v-card>
+
+      <v-card v-if="modal.delete == true">
+        <!-- Heading -->
+        <v-layout class="pa-1 pl-3 align-center">
+          <h3 class="subheading grey--text">{{ modal.text }}</h3>
+          <v-spacer></v-spacer>
+          <v-btn color='grey' flat icon @click.prevent='modal.show = !modal.show'>
+            <v-icon>close</v-icon>
+          </v-btn>
+        </v-layout>
+        <v-divider></v-divider>
+        <v-card-text>
+          <span class="subheading error--text">AVISO IMPORTANTE:</span> Al eliminar una cuenta es probable que se pierda información importante relacionada a la misma, los usuarios pertenecientes a dicha cuenta no podrán tener acceso a la plataforma, además es probable que se presente una perdida de datos irreversible.
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-layout class="pa-1 pr-3 pl-3">
+          <v-spacer></v-spacer>
+          <v-btn class="red--text text--lighten-3" flat @click="form.reset(), modal.show = false">
+            <v-icon class="subheading red--text text--lighten-3 mr-2">fa-close</v-icon>
+            Cancelar
+          </v-btn>
+          <v-btn class="green--text text--lighten-3" flat @click.prevent="submit('delete')">
+            <v-icon class="subheading green--text text--lighten-3 mr-2">fa-trash-o</v-icon>
+            Estoy seguro, eliminar.
           </v-btn>
         </v-layout>
       </v-card>
@@ -216,6 +238,7 @@ export default {
       ],
       items: [],
       form: new Form({
+        id: '',
         name: '',
         company: '',
         key: '',
@@ -231,7 +254,14 @@ export default {
       ]),
       toggleViewOptions: 0,
       search: '',
-      showModal: true
+      modal: {
+        create: false,
+        delete: false,
+        edit: false,
+        show: false,
+        text: '',
+        view: false,
+      },
     }
   },
   computed: {
@@ -262,12 +292,28 @@ export default {
     }
   },
   methods: {
-    submit() {
-      this.form.submit('post', '/cuentas')
-        .then(res => {
-          this.showModal = false
-          this.loadItems()
-        })
+    submit(action) {
+      if (action == 'create') {
+        this.form.submit('post', '/cuentas')
+          .then(res => {
+            this.modal.show = false
+            this.loadItems()
+          })
+      }
+      else if (action == 'delete') {
+        this.form.submit('delete', '/cuentas/' + this.form.id)
+          .then(res => {
+            this.modal.show = false
+            this.loadItems()
+          })
+      }
+      else if (action == 'edit') {
+        this.form.submit('put', '/cuentas/' + this.form.id)
+          .then(res => {
+            this.modal.show = false
+            this.loadItems()
+          })
+      }
     },
     loadItems() {
       axios.get('/cuentas')
@@ -278,6 +324,37 @@ export default {
           alert('Error al obtener datos del servidor.')
         })
     },
+    openModal(str, item = null) {
+      this.modal.create = false
+      this.modal.delete = false
+      this.modal.edit = false
+      this.modal.view = false
+
+      if (str == 'create') {
+        this.modal.create = true
+        this.modal.text = 'Crear cuenta'
+      }
+      if (str == 'delete') {
+        this.modal.delete = true,
+        this.modal.text = 'Eliminar cuenta de ' + item.name
+
+        this.form.id = item.id
+      }
+      if (str == 'edit') {
+        this.modal.edit = true,
+        this.modal.text = 'Editar cuenta de ' + item.name
+
+        this.form.id = item.id
+        this.form.name = item.name
+        this.form.company = item.company
+        this.form.key = item.key
+        this.form.type = item.type
+        this.form.note = item.note
+      }
+
+      this.modal.show = true
+
+    }
   },
   beforeMount() {
     this.loadItems()
