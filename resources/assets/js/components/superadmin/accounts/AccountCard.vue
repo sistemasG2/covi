@@ -29,7 +29,7 @@
       </v-btn>
       <v-list class="pa-0">
 
-        <v-list-tile @click="">
+        <v-list-tile @click="parentViewItem(item)">
           <v-list-tile-title class="cyan--text text--lighten-2  body-1">
             <v-icon class="cyan--text text--lighten-2 body-1 mr-1">fa-eye</v-icon>
             Ver detalles
@@ -96,8 +96,11 @@ export default {
             return 'N/A'
       }
     },
-    parentModal(action, id, item = null) {
-      this.$parent.openModal(action, id, item)
+    parentModal(action, item = null) {
+      this.$parent.openModal(action, item)
+    },
+    parentViewItem(item) {
+      this.$parent.openItem(item)
     },
     onResize() {
       this.windowWidth = window.innerWidth

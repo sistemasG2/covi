@@ -16,6 +16,9 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
+// GENERAL COMPONENTS
+Vue.component('loading-screen', require('./components/general/LoadingScreen.vue'));
+
 // SUPERADMIN PAGES COMPONENTS
 Vue.component('superadmin-users', require('./components/superadmin/Users.vue'));
 Vue.component('superadmin-accounts', require('./components/superadmin/Accounts.vue'));
@@ -23,6 +26,7 @@ Vue.component('superadmin-accounts', require('./components/superadmin/Accounts.v
 // SUPERADMIN COMPONENTS
 //accounts
 Vue.component('account-card', require('./components/superadmin/accounts/AccountCard.vue'));
+Vue.component('account-view', require('./components/superadmin/accounts/ViewAccount.vue'));
 
 
 const Vuetify = require('vuetify')

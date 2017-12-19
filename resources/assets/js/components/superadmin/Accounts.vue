@@ -34,8 +34,11 @@
       </v-btn>
     </v-layout>
 
+    <!-- IS LOADING -->
+    <loading-screen v-if="isLoading"></loading-screen>
+
     <!-- Card View -->
-    <section v-if="toggleViewOptions == 0 && items.length > 0">
+    <section v-if="toggleViewOptions == 0 && items.length > 0 && !isLoading">
       <v-container v-if="filteredItems.length > 0" class="mt-3 grid-list-sm" fluid>
         <v-layout row wrap>
             <account-card v-for="item in filteredItems" :key="item.id" :item="item"></account-card>
@@ -47,7 +50,7 @@
     </section>
 
     <!-- LIst View -->
-    <section v-else-if="toggleViewOptions == 1 && items.length > 0">
+    <section v-else-if="toggleViewOptions == 1 && items.length > 0 && !isLoading">
       <v-data-table
         class="mt-3"
         :headers="table.headers"
@@ -65,19 +68,19 @@
             <!-- Item Actions -->
             <td class="text-xs-right">
               <v-tooltip top>
-                <v-btn class="ma-0" slot="activator" small flat icon>
+                <v-btn class="ma-0" slot="activator" small flat icon @click="openItem(props.item)">
                   <v-icon class="cyan--text text--lighten-3 subheading">fa-eye</v-icon>
                 </v-btn>
                 <span>Más detalles</span>
               </v-tooltip>
               <v-tooltip top>
-                <v-btn class="ma-0" slot="activator" small flat icon>
+                <v-btn class="ma-0" slot="activator" small flat icon @click="openModal('edit', props.item)">
                   <v-icon class="green--text text--lighten-3 subheading">fa-pencil</v-icon>
                 </v-btn>
                 <span>Editar</span>
               </v-tooltip>
               <v-tooltip top>
-                <v-btn class="ma-0" slot="activator" small flat icon>
+                <v-btn class="ma-0" slot="activator" small flat icon @click="openModal('delete', props.item)">
                   <v-icon class="red--text text--lighten-3 subheading">fa-trash-o</v-icon>
                 </v-btn>
                 <span>Eliminar</span>
@@ -89,12 +92,15 @@
     </section>
 
     <!-- No Results -->
-    <section v-else class="pt-5 pb-5 full-height text-xs-center">
-      <h1 class="grey--text display-2">No hay resultados...</h1>
+    <section v-if="isLoading == false && items.length <= 0" class="pt-5 pb-5 full-height text-xs-center">
+      <h1 class="grey--text display-2 pt-5">No hay resultados...</h1>
       <p class="grey--text mt-4">
         No se han encontrado registros, por favor crea una cuenta nueva.
       </p>
     </section>
+
+    <!-- View Account -->
+    <account-view :viewItem="viewItem"></account-view>
 
     <!-- MODALS -->
     <v-dialog
@@ -220,6 +226,13 @@
       </v-card>
     </v-dialog>
 
+    <!-- SNACKBAR -->
+    <v-snackbar v-model="form.snackbar.show" :color="form.snackbar.color" bottom>
+      <v-icon class="mr-3 subheading">{{ form.snackbar.icon }}</v-icon>
+      {{ form.snackbar.message }}
+    </v-snackbar>
+
+
   </div>
 </template>
 
@@ -262,6 +275,11 @@ export default {
         text: '',
         view: false,
       },
+      isLoading: true,
+      viewItem: {
+        item: {},
+        show: false
+      }
     }
   },
   computed: {
@@ -316,13 +334,23 @@ export default {
       }
     },
     loadItems() {
+      this.isLoading = true
       axios.get('/cuentas')
         .then(res => {
           this.items = res.data
+          this.isLoading = false
         })
         .catch(err => {
           alert('Error al obtener datos del servidor.')
         })
+    },
+    openItem(item) {
+      this.viewItem.item = item
+      this.viewItem.show = true
+    },
+    closeItem() {
+      this.viewItem.item = {}
+      this.viewItem.show = false
     },
     openModal(str, item = null) {
       this.modal.create = false
