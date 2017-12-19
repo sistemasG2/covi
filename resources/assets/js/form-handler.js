@@ -75,7 +75,9 @@ export class Form {
       this[field] = data[field]
     }
 
-    this.errors = new Errors();
+    this.errors = new Errors()
+
+    this.snackbar = new Snackbar()
   }
 
   /**
@@ -126,7 +128,8 @@ export class Form {
    * @param {object} data
    */
   onSuccess(data) {
-      alert(data.message) // temporary
+      //alert(data.message) // temporary
+      this.snackbar.onSuccess(data.message)
       this.reset()
   }
 
@@ -136,6 +139,32 @@ export class Form {
    * @param {object} errors
    */
   onFail(errors) {
+    this.snackbar.onFail('Parece que ha habido un error!')
       this.errors.record(errors)
   }
+}
+
+class Snackbar {
+
+  constructor() {
+    this.color = ''
+    this.icon = ''
+    this.message = ''
+    this.show = false
+  }
+
+  onSuccess(msg) {
+    this.color = 'success'
+    this.icon = 'fa-check'
+    this.message = msg
+    this.show = true
+  }
+
+  onFail(msg) {
+    this.color = 'error'
+    this.icon = 'fa-close'
+    this.message = msg
+    this.show = true
+  }
+
 }

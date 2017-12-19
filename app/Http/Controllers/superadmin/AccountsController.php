@@ -60,7 +60,7 @@ class AccountsController extends Controller
           'company' => $request->input('company'),
           'key' => $request->input('key'),
           'type' => $request->input('type'),
-          'avatar' => 'https://loremflickr.com/400/400/logo',
+          'avatar' => 'http://via.placeholder.com/300x300',
           'note' => $request->input('note')
         ]);
 
@@ -128,7 +128,7 @@ class AccountsController extends Controller
         'company' => $request->company,
         'key' => $request->key,
         'type' => $request->type,
-        'avatar' => 'https://loremflickr.com/400/400/profile',
+        'avatar' => 'http://via.placeholder.com/300x300',
         'note' => $request->note
       ]);
 
