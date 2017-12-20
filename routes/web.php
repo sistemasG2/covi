@@ -11,13 +11,18 @@
 |
 */
 
+//Pages
+Route::get('/', 'pages\PagesController@home');
 
 // Superadmin Routes
 Route::get('/superadmin', 'superadmin\SuperAdminController@index');
 Route::get('/superadmin/cuentas', 'superadmin\SuperAdminController@accounts');
+Route::get('/superadmin/usuarios', 'superadmin\SuperAdminController@users');
 
 //Cuentas
 Route::apiResource('/cuentas', 'superadmin\AccountsController');
+//Usuarios
+Route::apiResource('/usuarios', 'superadmin\UsersController');
 
 
 // Route::get('/superadmin/cuentas', 'superadmin\SuperAdminController@accounts');
@@ -26,3 +31,11 @@ Route::apiResource('/cuentas', 'superadmin\AccountsController');
 // Route::get('/superadmin/reportes', 'superadmin\SuperAdminController@reports');
 // Route::get('/superadmin/soporte', 'superadmin\SuperAdminController@support');
 // Route::get('/superadmin/usuarios', 'superadmin\SuperAdminController@users');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

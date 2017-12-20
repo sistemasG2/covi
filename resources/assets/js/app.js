@@ -38,7 +38,7 @@ const app = new Vue({
     el: '#app',
 
     data: {
-      drawer: false,
+      drawer: true,
       mini: false
     }
 });
