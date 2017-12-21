@@ -9,13 +9,6 @@ use Illuminate\Support\Facades\Storage;
 
 class AccountsController extends Controller
 {
-    protected $user = [
-      'name' => 'Eduardo',
-      'lastname' => 'Alfaro',
-      'email' => 'mail@mail.com',
-      'username' => 'noson',
-      'avatar' => 'https://randomuser.me/api/portraits/men/12.jpg'
-    ];
     /**
      * Display a listing of the resource.
      *

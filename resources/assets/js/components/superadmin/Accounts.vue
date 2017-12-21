@@ -122,6 +122,8 @@
         <form class="pa-3" @submit.stop='submit' @keydown="form.errors.clear($event.target.name)">
           <v-container grid-list-md>
             <v-layout row wrap>
+              <upload-image></upload-image>
+
               <v-flex xs12 sm6>
                 <v-text-field
                   hint='Escribe el nombre de la cuenta.'
@@ -268,10 +270,10 @@ export default {
       toggleViewOptions: 0,
       search: '',
       modal: {
-        create: false,
+        create: true, // CAMBIAR A FALSE
         delete: false,
         edit: false,
-        show: false,
+        show: true, // CAMBIAR A FALSE
         text: '',
         view: false,
       },

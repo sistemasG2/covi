@@ -51,10 +51,10 @@
             </v-list-tile>
             <v-list-tile avatar tag="div">
               <v-list-tile-avatar>
-                <img src={{ $user['avatar'] }} />
+                <img src={{ Auth::user()->avatar }} />
               </v-list-tile-avatar>
               <v-list-tile-content>
-                <v-list-tile-title>{{ '@'.$user['username'] }}</v-list-tile-title>
+                <v-list-tile-title>{{ '@'.Auth::user()->username }}</v-list-tile-title>
               </v-list-tile-content>
               <v-list-tile-action>
                 <v-btn icon @click.stop="mini = !mini">

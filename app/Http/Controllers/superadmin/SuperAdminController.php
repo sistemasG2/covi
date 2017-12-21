@@ -4,17 +4,10 @@ namespace App\Http\Controllers\superadmin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class SuperAdminController extends Controller
 {
-    protected $user = [
-      'name' => 'Eduardo',
-      'lastname' => 'Alfaro',
-      'email' => 'mail@mail.com',
-      'username' => 'noson',
-      'avatar' => 'https://randomuser.me/api/portraits/men/12.jpg'
-    ];
-
     public function index()
     {
       return view('superadmin.dashboard',[
@@ -24,9 +17,7 @@ class SuperAdminController extends Controller
 
     public function accounts()
     {
-      return view('superadmin.accounts',[
-        'user' => $this->user
-      ]);
+      return view('superadmin.accounts');
     }
 
     public function profile()

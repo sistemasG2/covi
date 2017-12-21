@@ -12,9 +12,33 @@
 </head>
 <body>
   <div id="app">
-    <v-app>
-      @yield('content')
+    <v-app light>
+      <v-toolbar color="cyan" class="white--text">
+        <v-toolbar-title>
+          Covi
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+
+        @guest
+          <v-btn class="caption" href="/login" success small>Iniciar Sesión</v-btn>
+        @else
+          <v-btn class="caption" @click.prevent="logout" error small>Cerrar Sesión</v-btn>
+        @endguest
+
+      </v-toolbar>
+      <main>
+        <v-content>
+          <v-container fluid>
+            @yield('content')
+          </v-container>
+        </v-content>
+      </main>
     </v-app>
+
+    <!-- Logout Hidden Form -->
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        {{ csrf_field() }}
+    </form>
   </div>
   <script src="{{ mix('js/app.js') }}" charset="utf-8"></script>
 </body>

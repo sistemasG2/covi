@@ -27,6 +27,8 @@ Vue.component('superadmin-accounts', require('./components/superadmin/Accounts.v
 //accounts
 Vue.component('account-card', require('./components/superadmin/accounts/AccountCard.vue'));
 Vue.component('account-view', require('./components/superadmin/accounts/ViewAccount.vue'));
+Vue.component('upload-image', require('./components/superadmin/accounts/UploadImage.vue'));
+
 
 
 const Vuetify = require('vuetify')
@@ -40,5 +42,11 @@ const app = new Vue({
     data: {
       drawer: true,
       mini: false
+    },
+
+    methods: {
+      logout() {
+        document.getElementById('logout-form').submit();
+      }
     }
 });
