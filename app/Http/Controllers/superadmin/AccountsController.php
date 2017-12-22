@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Account;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class AccountsController extends Controller
 {
@@ -48,12 +49,25 @@ class AccountsController extends Controller
           'note.max' => 'Las notas no debe superar 255 caracteres.'
         ]);
 
+
+        $s3 = Storage::disk('s3');
+        $avatar = Image::make($request->avatar);
+        $avatar->resize(200, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+
+        $avatarFileName = date('ymd'.time()).str_shuffle ('accountslogos').".jpg";
+
+        $avatarPath = 'images/accounts_logos/';
+
+        $s3->put($avatarPath.$avatarFileName, $avatar->stream('jpg', 60)->__toString());
+
         $account = Account::create([
           'name' => $request->input('name'),
           'company' => $request->input('company'),
           'key' => $request->input('key'),
           'type' => $request->input('type'),
-          'avatar' => 'http://via.placeholder.com/300x300',
+          'avatar' => "/accounts_logos/".$avatarFileName,
           'note' => $request->input('note')
         ]);
 
