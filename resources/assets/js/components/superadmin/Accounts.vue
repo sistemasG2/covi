@@ -3,7 +3,7 @@
 
     <!-- Title -->
     <v-layout class="grey--text mt-2 mb-2">
-      <h1>Cuentas <span class="hidden-sm-and-down">de clientes</span></h1>
+      <h1>Cuentas <span class="hidden-sm-and-down">de clientes {{imagesurl}}</span></h1>
       <v-spacer></v-spacer>
       <v-btn class="ma-0" color="blue-grey" @click="openModal('create')">
         nueva
@@ -41,7 +41,7 @@
     <section v-if="toggleViewOptions == 0 && items.length > 0 && !isLoading">
       <v-container v-if="filteredItems.length > 0" class="mt-3 grid-list-sm" fluid>
         <v-layout row wrap>
-            <account-card v-for="item in filteredItems" :key="item.id" :item="item"></account-card>
+            <account-card v-for="item in filteredItems" :key="item.id" :item="item" :imagesurl="imagesurl"></account-card>
         </v-layout>
       </v-container>
       <div v-else class="pt-5 pb-5 full-height text-xs-center">
@@ -122,7 +122,8 @@
         <form class="pa-3" @submit.stop='submit' @keydown="form.errors.clear($event.target.name)">
           <v-container grid-list-md>
             <v-layout row wrap>
-              <upload-image></upload-image>
+
+              <upload-image :file.sync="form.avatar"></upload-image>
 
               <v-flex xs12 sm6>
                 <v-text-field
@@ -244,6 +245,7 @@ import {Table} from '../../classes.js'
 import {Form} from '../../form-handler.js'
 
 export default {
+  props: ['imagesurl'],
   data() {
     return {
       accountTypes: [
@@ -254,6 +256,7 @@ export default {
       items: [],
       form: new Form({
         id: '',
+        avatar: '',
         name: '',
         company: '',
         key: '',
