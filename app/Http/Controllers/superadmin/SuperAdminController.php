@@ -50,8 +50,6 @@ class SuperAdminController extends Controller
 
     public function users()
     {
-      return view('superadmin.users',[
-        'user' => $this->user
-      ]);
+      return view('superadmin.users');
     }
 }
