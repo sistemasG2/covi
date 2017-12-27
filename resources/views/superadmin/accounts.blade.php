@@ -5,5 +5,5 @@
 @endsection
 
 @section('content')
-  <superadmin-accounts imagesurl="{{ Storage::url('images') }}"></superadmin-accounts>
+  <superadmin-accounts></superadmin-accounts>
 @endsection

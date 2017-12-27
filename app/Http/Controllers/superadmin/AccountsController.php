@@ -49,27 +49,46 @@ class AccountsController extends Controller
           'note.max' => 'Las notas no debe superar 255 caracteres.'
         ]);
 
-
-        $s3 = Storage::disk('s3');
-        $avatar = Image::make($request->avatar);
-        $avatar->resize(200, null, function ($constraint) {
-            $constraint->aspectRatio();
-        });
-
-        $avatarFileName = date('ymd'.time()).str_shuffle ('accountslogos').".jpg";
-
-        $avatarPath = 'images/accounts_logos/';
-
-        $s3->put($avatarPath.$avatarFileName, $avatar->stream('jpg', 60)->__toString());
-
         $account = Account::create([
           'name' => $request->input('name'),
           'company' => $request->input('company'),
           'key' => $request->input('key'),
           'type' => $request->input('type'),
-          'avatar' => "/accounts_logos/".$avatarFileName,
           'note' => $request->input('note')
         ]);
+
+        if ($request->avatar) {
+          $s3 = Storage::disk('s3');
+
+          $avatar = Image::make($request->avatar);
+
+          $avatar->resize(200, null, function ($constraint) {
+              $constraint->aspectRatio();
+          });
+
+          $imgHeigth = $avatar->height();
+          $imgWidth = $avatar->width();
+
+          $avatar = Image::canvas($imgWidth, $imgHeigth, '#fefefe')->insert($avatar, 'center');
+
+          $avatarFileName = date('ymd'.time()).str_shuffle ('accountslogos').".jpg";
+
+          $avatarPath = 'images/accounts_logos/'.date('Y-m-d').'/';
+          $avatarDbPath = $s3->url('images').'/accounts_logos/'.date('Y-m-d').'/';
+
+          $s3->put($avatarPath.$avatarFileName, $avatar->stream('jpg', 60)->__toString());
+
+          $account->update([
+            'avatar' => $avatarDbPath.$avatarFileName,
+          ]);
+        }
+        else
+        {
+          $account->update([
+            'avatar' => url('/images/accounts_logos/imagen-no-disponible.png'),
+          ]);
+        }
+
 
         return ['message' => 'Se ha creado la cuenta exitosamente!'];
     }
@@ -135,9 +154,45 @@ class AccountsController extends Controller
         'company' => $request->company,
         'key' => $request->key,
         'type' => $request->type,
-        'avatar' => 'http://via.placeholder.com/300x300',
         'note' => $request->note
       ]);
+
+      if ($request->avatar) {
+
+        $accountAvatar = $account->avatar;
+        $accountAvatar = explode('.com/', $accountAvatar);
+        Storage::disk('s3')->delete($accountAvatar[1]);
+
+        $s3 = Storage::disk('s3');
+
+        $avatar = Image::make($request->avatar);
+
+        $avatar->resize(200, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+
+        $imgHeigth = $avatar->height();
+        $imgWidth = $avatar->width();
+
+        $avatar = Image::canvas($imgWidth, $imgHeigth, '#fefefe')->insert($avatar, 'center');
+
+        $avatarFileName = date('ymd'.time()).str_shuffle ('accountslogos').".jpg";
+
+        $avatarPath = 'images/accounts_logos/'.date('Y-m-d').'/';
+        $avatarDbPath = $s3->url('images').'/accounts_logos/'.date('Y-m-d').'/';
+
+        $s3->put($avatarPath.$avatarFileName, $avatar->stream('jpg', 60)->__toString());
+
+        $account->update([
+          'avatar' => $avatarDbPath.$avatarFileName,
+        ]);
+      }
+      else
+      {
+        $account->update([
+          'avatar' => url('/images/accounts_logos/imagen-no-disponible.png'),
+        ]);
+      }
 
       return ['message' => 'La cuenta de '.$request->name.' ha sido actualizada.'];
     }
@@ -151,6 +206,11 @@ class AccountsController extends Controller
     public function destroy($id)
     {
         $account = Account::find($id);
+
+        $accountAvatar = $account->avatar;
+        $accountAvatar = explode('.com/', $accountAvatar);
+        Storage::disk('s3')->delete($accountAvatar[1]);
+
         $account->delete();
 
         return ['message' => 'La cuenta de '.$account->name.' ha sido eliminada.'];

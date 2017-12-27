@@ -3,9 +3,12 @@
   <v-card :class="cardClass">
     <v-card-title class="pt-4">
       <v-layout class="" row>
-        <v-avatar tile class="mr-3 grey lighten-2" size="120px">
-          <img :src="imagesurl+item.avatar" :alt="'Logo de '+item.name">
-        </v-avatar>
+        <!-- <v-avatar tile class="mr-3 grey lighten-2" size="120px">
+          <img :src="item.avatar" :alt="'Logo de '+item.name">
+        </v-avatar> -->
+        <figure class="avatar--custom avatar--md avatar--bg-white mr-3">
+          <img :src="item.avatar" :alt="'Logo de '+item.name">
+        </figure>
         <v-layout class="mr-1 ma-0" column>
 
           <h1 class="mb-2 pr-4 title grey--text text--lighten-1">{{ item.name }}</h1>
@@ -59,7 +62,7 @@
 
 <script>
 export default {
-  props: ['item', 'imagesurl'],
+  props: ['item'],
   data() {
     return {
       windowWidth: 0

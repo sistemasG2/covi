@@ -9,5 +9,6 @@
   @endguest
 
   <h1>{{ storage_path('app/public/accounts_logos/').str_shuffle('avatar').date('mmddyy'.time()).".jpg" }}</h1>
-  <h2>{{ Storage::disk('s3')->url('images/') }}</h2>
+  <h2>{{ $url }}</h2>
+  <h3> {{ url('user/profile') }} </h3>
 @endsection

@@ -3,7 +3,7 @@
 
     <!-- Title -->
     <v-layout class="grey--text mt-2 mb-2">
-      <h1>Cuentas <span class="hidden-sm-and-down">de clientes {{imagesurl}}</span></h1>
+      <h1>Cuentas <span class="hidden-sm-and-down">de clientes</span></h1>
       <v-spacer></v-spacer>
       <v-btn class="ma-0" color="blue-grey" @click="openModal('create')">
         nueva
@@ -41,7 +41,7 @@
     <section v-if="toggleViewOptions == 0 && items.length > 0 && !isLoading">
       <v-container v-if="filteredItems.length > 0" class="mt-3 grid-list-sm" fluid>
         <v-layout row wrap>
-            <account-card v-for="item in filteredItems" :key="item.id" :item="item" :imagesurl="imagesurl"></account-card>
+            <account-card v-for="item in filteredItems" :key="item.id" :item="item"></account-card>
         </v-layout>
       </v-container>
       <div v-else class="pt-5 pb-5 full-height text-xs-center">
@@ -113,7 +113,7 @@
         <v-layout class="pa-1 pl-3 align-center">
           <h3 class="subheading grey--text">{{ modal.text }} cuenta</h3>
           <v-spacer></v-spacer>
-          <v-btn color='grey' flat icon @click.prevent='modal.show = !modal.show'>
+          <v-btn color='grey' flat icon @click.prevent='modal.show = !modal.show, form.reset()'>
             <v-icon>close</v-icon>
           </v-btn>
         </v-layout>
@@ -245,7 +245,6 @@ import {Table} from '../../classes.js'
 import {Form} from '../../form-handler.js'
 
 export default {
-  props: ['imagesurl'],
   data() {
     return {
       accountTypes: [
@@ -273,10 +272,10 @@ export default {
       toggleViewOptions: 0,
       search: '',
       modal: {
-        create: true, // CAMBIAR A FALSE
+        create: false, // CAMBIAR A FALSE
         delete: false,
         edit: false,
-        show: true, // CAMBIAR A FALSE
+        show: false, // CAMBIAR A FALSE
         text: '',
         view: false,
       },
@@ -383,6 +382,7 @@ export default {
         this.form.key = item.key
         this.form.type = item.type
         this.form.note = item.note
+        this.form.avatar = item.avatar
       }
 
       this.modal.show = true

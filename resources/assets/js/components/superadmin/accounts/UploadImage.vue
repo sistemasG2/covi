@@ -5,13 +5,16 @@
       Logotipo de cuenta
     </h1>
     <v-layout class="align-items--center image-box">
+      <div class="bg-preview" :style="'background-image: url('+ file +')'"></div>
       <div>
-
         <div class="image-preview mb-3">
           <div v-if="preview">
-            <v-avatar class="mb-3" size="130px" tile>
-              <img :src="file" alt="">
-            </v-avatar>
+            <figure class="avatar--custom avatar--md avatar--bg-white mr-3">
+              <img :src="file">
+            </figure>
+            <div class="delete-image" @click="resetFile">
+              <v-icon class="grey--text">close</v-icon>
+            </div>
           </div>
           <div v-else class="image-placeholder">
             Imagen no disponible
@@ -68,6 +71,9 @@ export default {
         this.$emit('update:file', e.target.result)
       }
     },
+    resetFile() {
+      this.$emit('update:file', '')
+    },
     resetProgress() {
       this.progress.max = 0
       this.progress.value = 0
@@ -85,6 +91,11 @@ export default {
 {
   width: 100%;
 
+  .preview
+  {
+    position: relative;
+  }
+
   .image-box {
     //border: 1px dotted grey;
     background-color: rgba(0,0,0,0.1);
@@ -92,6 +103,20 @@ export default {
     justify-content: center;
     position: relative;
     padding: 2em;
+    overflow: hidden;
+
+    .bg-preview
+    {
+      background-size: 130%;
+      background-position: center;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0.5;
+      filter: blur(15px);
+    }
   }
   .image-preview {
     height: 130px;

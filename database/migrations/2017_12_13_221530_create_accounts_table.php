@@ -20,7 +20,7 @@ class CreateAccountsTable extends Migration
             $table->string('company', 20);
             $table->string('key', 16)->unique();
             $table->integer('type')->unsigned();
-            $table->string('avatar');
+            $table->string('avatar')->nullable();
             $table->string('note', 255)->nullable();
         });
     }

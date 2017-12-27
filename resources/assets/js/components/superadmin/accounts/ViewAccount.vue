@@ -16,13 +16,9 @@
       <v-card-text class="pa-3">
         <v-layout row wrap>
           <v-flex xs12 sm4>
-            <v-avatar
-              tile
-              size="180px"
-              class="grey lighten-4"
-            >
+            <figure class="avatar--custom avatar--lg avatar--bg-white mr-4">
               <img :src="viewItem.item.avatar" :alt="'Logo de '+viewItem.item.name">
-            </v-avatar>
+            </figure>
           </v-flex>
           <v-flex xs12 sm8>
             <v-layout class="mt-3 mb-3">

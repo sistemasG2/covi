@@ -24,3 +24,56 @@
     justify-content: center;
   }
 }
+
+
+
+// accounts avatar
+.avatar
+{
+  &--custom
+  {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    img
+    {
+      max-width: 85%;
+      max-height: 85%;
+    }
+  }
+  &--md
+  {
+    height: 130px;
+    width: 130px;
+  }
+  &--lg
+  {
+    height: 180px;
+    width: 180px;
+  }
+  &--bg-white
+  {
+    background-color: #fefefe;
+  }
+}
+
+.delete-image
+{
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: .3s ease-in-out;
+
+  &:hover
+  {
+    opacity: 1;
+  }
+}
