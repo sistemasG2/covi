@@ -24,7 +24,9 @@ Vue.component('superadmin-users', require('./components/superadmin/Users.vue'));
 Vue.component('superadmin-accounts', require('./components/superadmin/Accounts.vue'));
 
 // SUPERADMIN COMPONENTS
-//accounts
+// users
+Vue.component('user-card', require('./components/superadmin/users/UserCard.vue'));
+// accounts
 Vue.component('account-card', require('./components/superadmin/accounts/AccountCard.vue'));
 Vue.component('account-view', require('./components/superadmin/accounts/ViewAccount.vue'));
 Vue.component('upload-image', require('./components/superadmin/accounts/UploadImage.vue'));
