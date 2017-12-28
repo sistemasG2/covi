@@ -15,7 +15,8 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        return $users;
     }
 
     /**
@@ -31,7 +32,7 @@ class UsersController extends Controller
           'lastname' => 'required|max:30',
           'username' => 'required|max:16|unique:users',
           'email' => 'email|max:50',
-          'account_id' = 'required'
+          'account_id' => 'required'
         ], [
           'name.required' => 'El campo nombre es obligatorio.',
           'name.max' => 'El nombre no debe exceder lols 30 caracteres.',
@@ -49,7 +50,9 @@ class UsersController extends Controller
           'lastname' => $request->lastname,
           'username' => $request->username,
           'email' => $request->email,
-          'account_id' => $request->account_id
+          'account_id' => $request->account_id,
+          'role_id' => $request->role_id,
+          'password' => bcrypt($request->password),
         ]);
 
         if ($request->avatar) {
@@ -60,7 +63,7 @@ class UsersController extends Controller
           // Generate avatar
         }
 
-        return ['message' => 'El usuario ... ha sido creado.'];
+        return ['message' => 'El usuario '. $user->username .' ha sido creado.'];
     }
 
     /**

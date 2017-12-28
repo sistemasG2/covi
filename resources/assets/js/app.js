@@ -18,6 +18,8 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
 
 // GENERAL COMPONENTS
 Vue.component('loading-screen', require('./components/general/LoadingScreen.vue'));
+Vue.component('image-uploader', require('./components/general/ImageUploader.vue'));
+Vue.component('form-snackbar', require('./components/general/FormSnackbar.vue'));
 
 // SUPERADMIN PAGES COMPONENTS
 Vue.component('superadmin-users', require('./components/superadmin/Users.vue'));
@@ -26,6 +28,8 @@ Vue.component('superadmin-accounts', require('./components/superadmin/Accounts.v
 // SUPERADMIN COMPONENTS
 // users
 Vue.component('user-card', require('./components/superadmin/users/UserCard.vue'));
+Vue.component('modal-user-create', require('./components/superadmin/users/modals/ModalUserCreate.vue'));
+
 // accounts
 Vue.component('account-card', require('./components/superadmin/accounts/AccountCard.vue'));
 Vue.component('account-view', require('./components/superadmin/accounts/ViewAccount.vue'));
@@ -49,6 +53,16 @@ const app = new Vue({
     methods: {
       logout() {
         document.getElementById('logout-form').submit();
+      },
+      showMenu() {
+        if (window.innerWidth > 600) {
+          this.drawer = true
+          this.mini = true
+        }
       }
+    },
+
+    beforeMount() {
+      this.showMenu()
     }
 });
