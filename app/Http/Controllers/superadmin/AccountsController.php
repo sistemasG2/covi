@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Account;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
+use App\Classes\ImageUploader;
 
 class AccountsController extends Controller
 {
@@ -18,7 +19,6 @@ class AccountsController extends Controller
     public function index()
     {
       $accounts = Account::select('id', 'name', 'company', 'key', 'note', 'type', 'avatar')->orderBy('name', 'asc')->get();
-
       return $accounts;
     }
 
@@ -57,30 +57,10 @@ class AccountsController extends Controller
           'note' => $request->input('note')
         ]);
 
-        if ($request->avatar) {
-          $s3 = Storage::disk('s3');
-
-          $avatar = Image::make($request->avatar);
-
-          $avatar->resize(200, null, function ($constraint) {
-              $constraint->aspectRatio();
-          });
-
-          $imgHeigth = $avatar->height();
-          $imgWidth = $avatar->width();
-
-          $avatar = Image::canvas($imgWidth, $imgHeigth, '#fefefe')->insert($avatar, 'center');
-
-          $avatarFileName = date('ymd'.time()).str_shuffle ('accountslogos').".jpg";
-
-          $avatarPath = 'images/accounts_logos/'.date('Y-m-d').'/';
-          $avatarDbPath = $s3->url('images').'/accounts_logos/'.date('Y-m-d').'/';
-
-          $s3->put($avatarPath.$avatarFileName, $avatar->stream('jpg', 60)->__toString());
-
-          $account->update([
-            'avatar' => $avatarDbPath.$avatarFileName,
-          ]);
+        if ($request->avatar)
+        {
+          $uploader = new ImageUploader($request->avatar, $account, 's3', 'images/accounts_logos/');
+          $uploader->store(200);
         }
         else
         {
@@ -101,7 +81,8 @@ class AccountsController extends Controller
      */
     public function show($id)
     {
-        //
+      $account = Account::find($id);
+      return $account;
     }
 
     /**
@@ -157,35 +138,10 @@ class AccountsController extends Controller
         'note' => $request->note
       ]);
 
-      if ($request->avatar) {
-
-        $accountAvatar = $account->avatar;
-        $accountAvatar = explode('.com/', $accountAvatar);
-        Storage::disk('s3')->delete($accountAvatar[1]);
-
-        $s3 = Storage::disk('s3');
-
-        $avatar = Image::make($request->avatar);
-
-        $avatar->resize(200, null, function ($constraint) {
-            $constraint->aspectRatio();
-        });
-
-        $imgHeigth = $avatar->height();
-        $imgWidth = $avatar->width();
-
-        $avatar = Image::canvas($imgWidth, $imgHeigth, '#fefefe')->insert($avatar, 'center');
-
-        $avatarFileName = date('ymd'.time()).str_shuffle ('accountslogos').".jpg";
-
-        $avatarPath = 'images/accounts_logos/'.date('Y-m-d').'/';
-        $avatarDbPath = $s3->url('images').'/accounts_logos/'.date('Y-m-d').'/';
-
-        $s3->put($avatarPath.$avatarFileName, $avatar->stream('jpg', 60)->__toString());
-
-        $account->update([
-          'avatar' => $avatarDbPath.$avatarFileName,
-        ]);
+      if ($request->avatar)
+      {
+        $uploader = new ImageUploader($request->avatar, $account, 's3', 'images/accounts_logos/', true);
+        $uploader->store(200);
       }
       else
       {
