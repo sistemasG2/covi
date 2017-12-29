@@ -36,21 +36,16 @@
     <section v-if="toggleViewOptions == 0">
       <v-container class="mt-3 grid-list-sm" fluid>
         <v-layout row wrap>
-          <user-card></user-card>
+          <user-card v-for="user in users" :user="user" :key="user.id" :modal="modal" :form="form"></user-card>
         </v-layout>
       </v-container>
     </section>
 
     <!-- MODAL -->
-    <v-dialog
-      v-model='modal.show'
-      max-width="600px"
-      persistent
-    >
-      <modal-user-create :modal="modal" :form="form"></modal-user-create>
-      <!-- <modal-user-edit></modal-user-edit>
-      <modal-user-delete></modal-user-delete> -->
-    </v-dialog>
+    <modal-user-create v-if="modal.create" :modal="modal" :form="form"></modal-user-create>
+    <!-- <modal-user-password v-if="modal.create" :modal="modal" :form="form"></modal-user-password> -->
+    <modal-user-delete v-if="modal.delete" :modal="modal" :form="form"></modal-user-delete>
+    <modal-user-edit v-if="modal.edit" :modal="modal" :form="form"></modal-user-edit>
 
     <!-- SNACKBAR -->
     <form-snackbar :form="form"></form-snackbar>
@@ -61,23 +56,31 @@
 
 <script>
 
-import {CrudModal, Table} from '../../classes.js'
-import {Form} from '../../form-handler.js'
+import { Modal, Table} from '../../classes.js'
+import { Form} from '../../form-handler.js'
 
 export default {
   data() {
     return {
       form: new Form({
+        id: '',
         avatar: '',
         name: '',
         lastname: '',
         username: '',
         email: '',
         password: '',
+        password_confirmation: '',
         account_id: '',
         role_id: ''
       }),
-      modal: new CrudModal(),
+      modal: new Modal([
+        'create',
+        'changePassword',
+        'edit',
+        'delete',
+        'view'
+      ]),
       search: '',
       toggleViewOptions: 0,
       users: []

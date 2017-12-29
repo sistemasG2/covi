@@ -1,21 +1,27 @@
-export class CrudModal {
+export class Modal {
 
-  constructor() {
-    this.create = false
-    this.delete = false
-    this.edit = false
+  /**
+  * Create instance of Modal
+  * @param {array} options with options
+  */
+  constructor(arr = []) {
+
+    this.originalArr = arr
+
+    for (let option in arr) {
+      this[arr[option]] = false
+    }
+
     this.show = false
-    this.text = ''
-    this.view = false
+    this.text = false
   }
 
   clearOptions() {
-    this.create = false
-    this.delete = false
-    this.edit = false
+    for (let option in this.originalArr) {
+      this[this.originalArr[option]] = false
+    }
     this.show = false
-    this.text = ''
-    this.view = false
+    this.text = false
   }
 
   /**
@@ -23,7 +29,7 @@ export class CrudModal {
    * @param {string} options
    * @param {string} text
    */
-  open(str, text) {
+  open(str, text = '') {
     this.clearOptions()
     this[str] = true
     this.text = text

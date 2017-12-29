@@ -7,7 +7,7 @@
     <v-card>
       <!-- Heading -->
       <v-layout class="pa-1 pl-3 align-center">
-        <h3 class="subheading grey--text">Crear usuario</h3>
+        <h3 class="subheading grey--text">{{ modal.text }} usuario {{ '@'+form.username }}</h3>
         <v-spacer></v-spacer>
         <v-btn color='grey' flat icon @click="close">
           <v-icon>close</v-icon>
@@ -57,28 +57,6 @@
                 prepend-icon="fa-envelope-o"
                 v-model="form.email"
                 :error-messages="form.errors.get('email')"
-              ></v-text-field>
-            </v-flex>
-
-            <v-flex xs12 sm6>
-              <v-text-field
-                name="password"
-                label="Contraseña"
-                prepend-icon="vpn_key"
-                v-model="form.password"
-                :error-messages="form.errors.get('password')"
-                type="password"
-              ></v-text-field>
-            </v-flex>
-
-            <v-flex xs12 sm6>
-              <v-text-field
-                name="password_confirmation"
-                label="Confirmar Contraseña"
-                prepend-icon="vpn_key"
-                v-model="form.password_confirmation"
-                :error-messages="form.errors.get('password')"
-                type="password"
               ></v-text-field>
             </v-flex>
 
@@ -158,7 +136,7 @@ export default {
         })
     },
     submit() {
-      this.form.submit('post', '/usuarios')
+      this.form.submit('put', '/usuarios/'+this.form.id)
         .then(res => {
           this.modal.show = false
           this.$parent.loadUsers()

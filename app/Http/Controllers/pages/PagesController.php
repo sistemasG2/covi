@@ -21,7 +21,8 @@ class PagesController extends Controller
       // $account = Account::find(5);
       // $uploader = new ImageUploaderS3($account);
       // $uploader->changeName();
-
-      return Storage::url('images/accounts_logos/2017-12-27/1712271514407902lncsguoosotac.jpg');
+      $url = explode('/', 'https://coviweb.s3.amazonaws.com/images/accounts_logos/1712291514582636Q1nczks2RD.jpg');
+      $root = explode('/', Storage::url('/'));
+      return $url[2].'<br>'.$root[2];
     }
 }

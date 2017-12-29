@@ -59,8 +59,8 @@ class AccountsController extends Controller
 
         if ($request->avatar)
         {
-          $uploader = new ImageUploader($request->avatar, $account, 's3', 'images/accounts_logos/');
-          $uploader->store(200);
+          $uploader = new ImageUploader($request->avatar, $account, 'avatar', 's3', 'images/accounts/logos/');
+          $uploader->store('avatar', 200);
         }
         else
         {
@@ -140,9 +140,9 @@ class AccountsController extends Controller
 
       if ($request->avatar)
       {
-        $uploader = new ImageUploader($request->avatar, $account, 's3', 'images/accounts_logos/');
+        $uploader = new ImageUploader($request->avatar, $account, 'avatar', 's3', 'images/accounts/logos/');
         $uploader->removeOld();
-        $uploader->store(200);
+        $uploader->store('avatar', 200);
       }
       else
       {

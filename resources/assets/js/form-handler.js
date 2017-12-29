@@ -94,6 +94,19 @@ export class Form {
   }
 
   /**
+  * Load data
+  * @param {string} url
+  */
+  edit(url) {
+    axios.get(url)
+      .then(res => {
+        for (let field in this.originalData) {
+          this[field] = res.data[field]
+        }
+      })
+  }
+
+  /**
   * Reset the form fields.
   */
   reset() {
