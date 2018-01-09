@@ -33,15 +33,33 @@
       </v-btn>
     </v-layout>
 
-    <section v-if="toggleViewOptions == 0">
+    <loading-screen v-if="isLoading"></loading-screen>
+
+    <section v-if="toggleViewOptions == 0 && isLoading == false">
       <v-container class="mt-3 grid-list-sm" fluid>
         <v-layout row wrap>
-          <user-card v-for="user in users" :user="user" :key="user.id" :modal="modal" :form="form"></user-card>
+          <user-card v-for="user in filteredItems" :user="user" :key="user.id" :modal="modal" :form="form"></user-card>
         </v-layout>
       </v-container>
     </section>
 
-    <!-- MODAL -->
+    <section v-if="toggleViewOptions == 1 && isLoading == false">
+      <v-container class="mt-3 grid-list-sm" fluid>
+        <v-layout row wrap>
+          <users-table :table="table" :search="search"></users-table>
+        </v-layout>
+      </v-container>
+    </section>
+
+    <avatar src="https://cdn3.f-cdn.com/files/download/33774556/friendly+face.jpg" size="50"></avatar>
+
+    <!-- No Search Result -->
+    <no-result v-if="filteredItems.length <= 0 && !isLoading"></no-result>
+
+    <!-- No Data Result -->
+    <no-data v-if="isLoading == false && table.items.length <= 0"></no-data>
+
+    <!-- MODALS -->
     <modal-user-create v-if="modal.create" :modal="modal" :form="form"></modal-user-create>
     <!-- <modal-user-password v-if="modal.create" :modal="modal" :form="form"></modal-user-password> -->
     <modal-user-delete v-if="modal.delete" :modal="modal" :form="form"></modal-user-delete>
@@ -56,8 +74,8 @@
 
 <script>
 
-import { Modal, Table} from '../../classes.js'
-import { Form} from '../../form-handler.js'
+import { Modal, Table,} from '../../classes.js'
+import { Form } from '../../form-handler.js'
 
 export default {
   data() {
@@ -74,6 +92,7 @@ export default {
         account_id: '',
         role_id: ''
       }),
+      isLoading: true,
       modal: new Modal([
         'create',
         'changePassword',
@@ -82,15 +101,52 @@ export default {
         'view'
       ]),
       search: '',
+      table: new Table([
+          { text: 'Id', align: 'left', value: 'id' },
+          { text: 'Usuario', align: 'left', value: 'username' },
+          { text: 'Nombre', align: 'left', value: 'name' },
+          { text: 'Apellidos', align: 'left', value: 'lastname' },
+          { text: 'Email', align: 'left', value: 'email' },
+          { text: 'Cuenta', align: 'left', value: 'account' },
+          { text: 'Acciones', align: 'right', value: 'actions', sortable: false }
+      ]),
       toggleViewOptions: 0,
-      users: []
+      //users: []
+    }
+  },
+  computed: {
+    filteredItems() {
+      if (this.search && this.toggleViewOptions == 0) {
+        let items = this.table.items
+        let result = [];
+
+        for (var i = 0; i < items.length; i++) {
+          let verified = false
+          Object.keys(items[i]).some(prop => {
+            let item = items[i][prop]
+            if (item) {
+              let content = item.toString().toLowerCase()
+              if (content.includes(this.search.toLowerCase())) {
+                verified = true
+              }
+            }
+          })
+          if (verified == true) {
+            result.push(items[i])
+          }
+        }
+
+        return result
+      }
+
+      return this.table.items
     }
   },
   methods: {
     loadUsers() {
-      axios.get('/usuarios')
+      this.table.loadData('/usuarios')
         .then(res => {
-          this.users = res.data
+          this.isLoading = false
         })
     }
   },

@@ -32,10 +32,10 @@
       $storedImage = $this->obj[$this->dbcolumn];
 
       // Delete from Storage
-      $db = explode('/', 'https://coviweb.s3.amazonaws.com/images/accounts_logos/1712291514582636Q1nczks2RD.jpg');
+      $storedImageExploded = explode('/', $storedImage);
       $s3 = explode('/', Storage::url('/'));
 
-      if ($db[2] == $s3[2]) {
+      if ($storedImageExploded[2] == $s3[2]) {
         // Explode to get Path
         $storedImage = explode('.com/', $storedImage);
         $this->storage->delete($storedImage[1]);

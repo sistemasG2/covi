@@ -59,9 +59,57 @@ export class Table {
    * @param {string} url
    */
   loadData(url) {
-    axios.get(url)
-      .then(res => {
-        this.items = res.data
-      })
+    // axios.get(url)
+    //   .then(res => {
+    //     this.items = res.data
+    //   })
+    return new Promise((resolve, reject) => {
+      axios.get(url)
+        .then(response => {
+          this.items = response.data
+          resolve(response.data)
+        })
+        .catch(error => {
+          reject(error.response.data)
+        })
+    })
+  }
+}
+
+export class Searchbox {
+  constructor() {
+    this.search = ''
+    this.items = []
+  }
+
+  setItems(items) {
+    this.items = items
+  }
+
+  filteredItems() {
+    if (this.search && this.toggleViewOptions == 0) {
+      let items = this.items
+      let result = [];
+
+      for (var i = 0; i < items.length; i++) {
+        let verified = false
+        Object.keys(items[i]).some(prop => {
+          let item = items[i][prop]
+          if (item) {
+            let content = item.toString().toLowerCase()
+            if (content.includes(this.search.toLowerCase())) {
+              verified = true
+            }
+          }
+        })
+        if (verified == true) {
+          result.push(items[i])
+        }
+      }
+
+      return result
+    }
+
+    return this.items
   }
 }

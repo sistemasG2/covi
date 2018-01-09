@@ -17,9 +17,13 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
 // GENERAL COMPONENTS
+Vue.component('avatar', require('./components/general/Avatar.vue'));
 Vue.component('loading-screen', require('./components/general/LoadingScreen.vue'));
 Vue.component('image-uploader', require('./components/general/ImageUploader.vue'));
 Vue.component('form-snackbar', require('./components/general/FormSnackbar.vue'));
+Vue.component('table-view', require('./components/general/TableView.vue'));
+Vue.component('no-data', require('./components/general/NoData.vue'));
+Vue.component('no-result', require('./components/general/NoResult.vue'));
 
 // SUPERADMIN PAGES COMPONENTS
 Vue.component('superadmin-users', require('./components/superadmin/Users.vue'));
@@ -28,6 +32,7 @@ Vue.component('superadmin-accounts', require('./components/superadmin/Accounts.v
 // SUPERADMIN COMPONENTS
 // users
 Vue.component('user-card', require('./components/superadmin/users/UserCard.vue'));
+Vue.component('users-table', require('./components/superadmin/users/UsersTable.vue'));
 Vue.component('avatar-form-uploader', require('./components/superadmin/users/AvatarFormUploader.vue'));
 Vue.component('modal-user-create', require('./components/superadmin/users/modals/ModalUserCreate.vue'));
 Vue.component('modal-user-delete', require('./components/superadmin/users/modals/ModalUserDelete.vue'));
