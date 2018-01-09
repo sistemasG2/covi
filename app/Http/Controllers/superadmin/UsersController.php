@@ -71,7 +71,7 @@ class UsersController extends Controller
         }
         else
         {
-          $account->update([
+          $user->update([
             'avatar' => url('/images/accounts_logos/imagen-no-disponible.png'),
           ]);
         }
@@ -141,12 +141,12 @@ class UsersController extends Controller
         if ($request->avatar)
         {
           $uploader = new ImageUploader($request->avatar, $user,'avatar', 's3', 'images/users/avatars/');
-          $uploader->removeOld();
-          $uploader->store('avatar', 200);
+          $uploader->removeFromS3();
+          $uploader->store(200);
         }
         else
         {
-          $account->update([
+          $user->update([
             'avatar' => url('/images/accounts_logos/imagen-no-disponible.png'),
           ]);
         }
@@ -164,6 +164,6 @@ class UsersController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        return ['message' => 'El Usuario ... ha sido eliminado.'];
+        return ['message' => 'El Usuario @'.$user->username.' ha sido eliminado.'];
     }
 }

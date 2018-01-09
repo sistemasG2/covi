@@ -38,8 +38,7 @@
       </v-menu>
 
       <v-layout row>
-        <figure class="user-avatar" :style="'background-image: url('+user.avatar+')'">
-        </figure>
+        <avatar :src="user.avatar" size="100" hoverable></avatar>
         <v-layout class="ml-3 mt-0 mb-0 details" column>
           <h1 class="subheading mb-2">{{ '@'+user.username }}</h1>
           <div>
@@ -91,16 +90,6 @@ export default {
   .user-card
   {
     align-items: center!important;
-    figure
-    {
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-      border-radius: 50%;
-      min-width: 100px;
-      min-height: 100px;
-      overflow: hidden;
-    }
     .details
     {
       display: flex;

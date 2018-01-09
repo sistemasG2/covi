@@ -26,20 +26,21 @@
       $this->imgDbPath = $this->storage->url($path).$this->imgName;
     }
 
-    public function removeOld()
+    public function removeFromS3()
     {
       // Find Stored URL
       $storedImage = $this->obj[$this->dbcolumn];
 
-      // Delete from Storage
+      //Delete from Storage
       $storedImageExploded = explode('/', $storedImage);
-      $s3 = explode('/', Storage::url('/'));
+      $storageUrl = explode('/', Storage::url('/'));
 
-      if ($storedImageExploded[2] == $s3[2]) {
+      if ($storedImageExploded[2] == $storageUrl[2]) {
         // Explode to get Path
         $storedImage = explode('.com/', $storedImage);
         $this->storage->delete($storedImage[1]);
       }
+
     }
 
     public function store($size = 100)

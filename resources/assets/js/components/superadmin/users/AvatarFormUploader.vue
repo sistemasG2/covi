@@ -18,8 +18,8 @@
     <progress
       id="progress-bar"
       class="progress-bar"
-      max="100"
-      value="60"
+      :max="progress.max"
+      :value="progress.value"
     >
     </progress>
   </v-flex>
@@ -28,11 +28,26 @@
 <script>
 export default {
   props: ['file'],
+  data() {
+    return {
+      progress: {
+        max: 100,
+        value: 0
+      }
+    }
+  },
   methods: {
     onFileChange(ev) {
       const fileReader = new FileReader()
 
       fileReader.readAsDataURL(ev.target.files[0])
+
+      fileReader.onprogress = (e) => {
+        if (e.lengthComputable) {
+          this.progress.max = e.total
+          this.progress.value = e.loaded
+        }
+      }
 
       fileReader.onload = (ev) => {
         this.$emit('update:file', ev.target.result)

@@ -51,8 +51,6 @@
       </v-container>
     </section>
 
-    <avatar src="https://cdn3.f-cdn.com/files/download/33774556/friendly+face.jpg" size="50"></avatar>
-
     <!-- No Search Result -->
     <no-result v-if="filteredItems.length <= 0 && !isLoading"></no-result>
 
@@ -67,6 +65,10 @@
 
     <!-- SNACKBAR -->
     <form-snackbar :form="form"></form-snackbar>
+
+    <div class="text-xs-center mt-5 mb-3">
+      <v-pagination :length="15" :total-visible="5"></v-pagination>
+    </div>
 
   </div>
 
