@@ -22,6 +22,7 @@ Route::get('/superadmin/usuarios', 'superadmin\SuperAdminController@users');
 //Cuentas
 Route::apiResource('/cuentas', 'superadmin\AccountsController');
 //Usuarios
+Route::put('/usuarios/cambiar-contrasena/{id}', 'superadmin\UsersController@changePassword');
 Route::apiResource('/usuarios', 'superadmin\UsersController');
 
 
