@@ -21,7 +21,7 @@
             </v-list-tile-title>
           </v-list-tile>
 
-          <v-list-tile>
+          <v-list-tile @click="modal.open('changePassword'), form.id = user.id, form.username = user.username">
             <v-list-tile-title class="orange--text text--lighten-3  body-1">
               <v-icon class="orange--text text--lighten-3 body-1 mr-1">vpn_key</v-icon>
               Cambiar contraseña

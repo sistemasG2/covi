@@ -49,7 +49,7 @@ export default {
     border-radius: 0!important;
   }
   &--hoverable:hover {
-    transform: scale(1.1) rotate(-10deg);
+    transform: scale(1.05) rotate(-10deg);
     box-shadow: 0 3px 15px rgba(0,0,0,0.3);
   }
 }

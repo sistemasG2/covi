@@ -154,6 +154,25 @@ class UsersController extends Controller
         return ['message' => 'El Usuario @'. $user->username .' ha sido actualizado.'];
     }
 
+    public function changePassword(Request $request, $id)
+    {
+      $user = User::find($id);
+
+      $request->validate([
+        'password' => 'required|min:6|confirmed',
+      ], [
+        'password.required' => 'Ingresa una contraseña valida.',
+        'password.min' => 'La contraseña debe tener al menos 6 caracteres.',
+        'password.confirmed' => 'La contraseña debe coincidir.',
+      ]);
+
+      $user->update([
+        'password' => bcrypt($request->password)
+      ]);
+
+      return ['message' => 'La contraseña de @'.$user->username.' ha sido actualizada.'];
+    }
+
     /**
      * Remove the specified resource from storage.
      *

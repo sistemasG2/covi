@@ -37,6 +37,7 @@ Vue.component('avatar-form-uploader', require('./components/superadmin/users/Ava
 Vue.component('modal-user-create', require('./components/superadmin/users/modals/ModalUserCreate.vue'));
 Vue.component('modal-user-delete', require('./components/superadmin/users/modals/ModalUserDelete.vue'));
 Vue.component('modal-user-edit', require('./components/superadmin/users/modals/ModalUserEdit.vue'));
+Vue.component('modal-user-change-password', require('./components/superadmin/users/modals/ModalUserChangePassword.vue'));
 
 // accounts
 Vue.component('account-card', require('./components/superadmin/accounts/AccountCard.vue'));
@@ -45,10 +46,16 @@ Vue.component('upload-image', require('./components/superadmin/accounts/UploadIm
 
 
 
-const Vuetify = require('vuetify')
-Vue.use(Vuetify, {
-  primary: 'cyan'
-})
+// const Vuetify = require('vuetify')
+// Vue.use(Vuetify, {
+//   primary: 'cyan'
+// })
+
+import Vuetify from 'vuetify'
+Vue.use(Vuetify)
+
+import VuePaginate from 'vue-paginate'
+Vue.use(VuePaginate)
 
 const app = new Vue({
     el: '#app',
