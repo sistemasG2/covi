@@ -26,6 +26,10 @@
       $this->imgDbPath = $this->storage->url($path).$this->imgName;
     }
 
+    public function generateRandomString($length = 10) {
+        return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+    }
+
     public function removeFromS3()
     {
       // Find Stored URL
@@ -43,18 +47,6 @@
 
     }
 
-    public function store($size = 100)
-    {
-      // Resize to fix bg and size issues
-      $this->resizeImg($size);
-      // Store new File
-      $this->storage->put($this->imgPath.$this->imgName, $this->img->stream('jpg', 60)->__toString());
-      // Update DB Path
-      $this->obj->update([
-        $this->dbcolumn => $this->imgDbPath
-      ]);
-    }
-
     public function resizeImg($val = 100)
     {
       // Resize to $val value
@@ -68,8 +60,16 @@
       $this->img = Image::canvas($width, $heigth, '#fefefe')->insert($this->img, 'center');
     }
 
-    public function generateRandomString($length = 10) {
-        return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+    public function store($size = 100)
+    {
+      // Resize to fix bg and size issues
+      $this->resizeImg($size);
+      // Store new File
+      $this->storage->put($this->imgPath.$this->imgName, $this->img->stream('jpg', 60)->__toString());
+      // Update DB Path
+      $this->obj->update([
+        $this->dbcolumn => $this->imgDbPath
+      ]);
     }
 
   }
