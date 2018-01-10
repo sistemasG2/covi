@@ -5,7 +5,8 @@
     :headers="table.headers"
     :items="table.items"
     :search="search"
-    hide-actions
+    :rows-per-page-items="[10,25,50,100, {text: 'Todos', value: -1}]"
+    :rows-per-page-text="'Resultados por página'"
     item-key="name"
   >
     <template slot="items" slot-scope="props">
@@ -42,9 +43,14 @@
         </td>
       </tr>
     </template>
+    <template slot="pageText" slot-scope="{ pageStart, pageStop }">
+      {{ pageStart }}-{{ pageStop }} de {{ table.items.length }}
+    </template>
   </v-data-table>
 
 </template>
+
+
 
 <script>
 export default {

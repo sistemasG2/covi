@@ -52,6 +52,7 @@ export class Table {
     this.headers = array
     this.items = []
     this.isLoading = false
+    this.pagination = {}
   }
   /**
    * Load items from given url

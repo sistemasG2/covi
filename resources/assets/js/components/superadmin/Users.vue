@@ -33,16 +33,47 @@
       </v-btn>
     </v-layout>
 
+    <!-- Loading Screen -->
     <loading-screen v-if="isLoading"></loading-screen>
 
-    <section v-if="toggleViewOptions == 0 && isLoading == false">
+    <!-- Users Card View -->
+    <!-- <section v-if="toggleViewOptions == 0 && isLoading == false">
       <v-container class="mt-3 grid-list-sm" fluid>
         <v-layout row wrap>
           <user-card v-for="user in filteredItems" :user="user" :key="user.id" :modal="modal" :form="form"></user-card>
         </v-layout>
       </v-container>
-    </section>
+    </section> -->
 
+    <section v-if="toggleViewOptions == 0 && isLoading == false">
+      <v-container class="mt-3 grid-list-sm" fluid>
+        <paginate class="layout row wrap" name="users" :list="filteredItems" :per="15">
+          <user-card v-for="user in paginated('users')" :user="user" :key="user.id" :modal="modal" :form="form"></user-card>
+        </paginate>
+      </v-container>
+      <!-- Pagination -->
+      <div class="text-xs-center mt-5 mb-3">
+        <paginate-links
+        for="users"
+        :limit="5"
+        show-step-links
+        async
+        :classes="{
+          'ul': 'pagination',
+          'a': 'pagination__item',
+          '.left-arrow > a': ['material-icons','md-36'],
+          '.right-arrow > a': ['material-icons','md-36'],
+        }"
+        :step-links="{
+          next: 'chevron_right',
+          prev: 'chevron_left'
+        }"
+        ></paginate-links>
+      </div>
+    </section>  
+
+
+    <!-- Users Table View -->
     <section v-if="toggleViewOptions == 1 && isLoading == false">
       <v-container class="mt-3 grid-list-sm" fluid>
         <v-layout row wrap>
@@ -59,16 +90,12 @@
 
     <!-- MODALS -->
     <modal-user-create v-if="modal.create" :modal="modal" :form="form"></modal-user-create>
-    <!-- <modal-user-password v-if="modal.create" :modal="modal" :form="form"></modal-user-password> -->
+    <modal-user-change-password v-if="modal.changePassword" :modal="modal" :form="form"></modal-user-change-password>
     <modal-user-delete v-if="modal.delete" :modal="modal" :form="form"></modal-user-delete>
     <modal-user-edit v-if="modal.edit" :modal="modal" :form="form"></modal-user-edit>
 
     <!-- SNACKBAR -->
     <form-snackbar :form="form"></form-snackbar>
-
-    <div class="text-xs-center mt-5 mb-3">
-      <v-pagination :length="15" :total-visible="5"></v-pagination>
-    </div>
 
   </div>
 
@@ -82,6 +109,7 @@ import { Form } from '../../form-handler.js'
 export default {
   data() {
     return {
+      page: 2,
       form: new Form({
         id: '',
         avatar: '',
@@ -113,7 +141,7 @@ export default {
           { text: 'Acciones', align: 'right', value: 'actions', sortable: false }
       ]),
       toggleViewOptions: 0,
-      //users: []
+      paginate: ['users']
     }
   },
   computed: {
@@ -158,5 +186,10 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="scss">
+.pagination {
+  .active a{
+    background-color: rgb(25, 118, 210);
+  }
+}
 </style>
