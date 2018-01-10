@@ -8,7 +8,5 @@
       {{ Auth::user()->username }}
   @endguest
 
-  <h1>{{ storage_path('app/public/accounts_logos/').str_shuffle('avatar').date('mmddyy'.time()).".jpg" }}</h1>
-  <h2>{{ $url }}</h2>
-  <h3> {{ url('user/profile') }} </h3>
+  <img src="{{ Avatar::create('Élexander Quesada')->toBase64() }}" />
 @endsection

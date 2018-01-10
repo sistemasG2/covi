@@ -18,7 +18,7 @@
         <v-container grid-list-md>
           <v-layout row wrap>
 
-            <avatar-form-uploader :file.sync="form.avatar"></avatar-form-uploader>
+            <avatar-form-uploader :file.sync="form.avatar" :form="form"></avatar-form-uploader>
 
             <v-flex xs12 sm6>
               <v-text-field

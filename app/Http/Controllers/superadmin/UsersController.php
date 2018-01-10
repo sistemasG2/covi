@@ -64,16 +64,14 @@ class UsersController extends Controller
           'password' => bcrypt($request->password),
         ]);
 
+        $uploader = new ImageUploader($request->avatar, $user,'avatar', 's3', 'images/users/avatars/');
         if ($request->avatar)
         {
-          $uploader = new ImageUploader($request->avatar, $user,'avatar', 's3', 'images/users/avatars/');
           $uploader->store('avatar', 200);
         }
         else
         {
-          $user->update([
-            'avatar' => url('/images/accounts_logos/imagen-no-disponible.png'),
-          ]);
+          $uploader->storeGenericImage($user->name.' '.$user->lastname, 200, $request->avatar_bg_color);
         }
 
         return ['message' => 'El usuario @'. $user->username .' ha sido creado.'];
@@ -138,17 +136,18 @@ class UsersController extends Controller
           'role_id' => $request->role_id,
         ]);
 
+
+        $uploader = new ImageUploader($request->avatar, $user,'avatar', 's3', 'images/users/avatars/');
+
         if ($request->avatar)
         {
-          $uploader = new ImageUploader($request->avatar, $user,'avatar', 's3', 'images/users/avatars/');
           $uploader->removeFromS3();
           $uploader->store(200);
         }
         else
         {
-          $user->update([
-            'avatar' => url('/images/accounts_logos/imagen-no-disponible.png'),
-          ]);
+          $uploader->removeFromS3();
+          $uploader->storeGenericImage($user->name.' '.$user->lastname, 200, $request->avatar_bg_color);
         }
 
         return ['message' => 'El Usuario @'. $user->username .' ha sido actualizado.'];

@@ -70,7 +70,7 @@
         }"
         ></paginate-links>
       </div>
-    </section>  
+    </section>
 
 
     <!-- Users Table View -->
@@ -113,6 +113,7 @@ export default {
       form: new Form({
         id: '',
         avatar: '',
+        avatar_bg_color: '',
         name: '',
         lastname: '',
         username: '',

@@ -13,10 +13,6 @@ class PagesController extends Controller
 {
     public function home()
     {
-      $storedImage = Auth::user()->avatar;
-      $storedImageExploded = explode('/', $storedImage);
-      $storageUrl = explode('/', Storage::url('/'));
-      return $storedImageExploded[2].'<br>'.$storageUrl[2];
-      //return dd($storedImageExploded);
+      return view('pages.home');
     }
 }

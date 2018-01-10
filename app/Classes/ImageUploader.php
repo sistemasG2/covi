@@ -4,6 +4,7 @@
 
   use Illuminate\Support\Facades\Storage;
   use Intervention\Image\ImageManagerStatic as Image;
+  use Laravolt\Avatar\Facade as Avatar;
 
   /**
    * @param string $input // The string provided from an form input
@@ -20,7 +21,11 @@
       $this->obj = $obj;
       $this->dbcolumn = $dbcolumn;
       $this->storage = Storage::disk($disk);
-      $this->img = Image::make($this->input);
+      //$this->img = Image::make($this->input);
+      $this->img = '';
+      if ($this->input) {
+        $this->img = Image::make($this->input);
+      }
       $this->imgName = date('ymd'.time()).$this->generateRandomString().".jpg";
       $this->imgPath = $path;
       $this->imgDbPath = $this->storage->url($path).$this->imgName;
@@ -70,6 +75,18 @@
       $this->obj->update([
         $this->dbcolumn => $this->imgDbPath
       ]);
+    }
+    public function storeGenericImage($str, $size = 100, $bgColor = false, $fontSize = 64, $shape = 'square')
+    {
+      $buildImage = Avatar::create($str);
+      $buildImage->setDimension($size);
+      $buildImage->setShape($shape);
+      $buildImage->setFontSize($fontSize);
+      if ($bgColor) {
+        $buildImage->setBackground($bgColor);
+      }
+      $this->img = $buildImage->getImageObject();
+      $this->store($size);
     }
 
   }
