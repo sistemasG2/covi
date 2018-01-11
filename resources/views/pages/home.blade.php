@@ -9,4 +9,8 @@
   @endguest
 
   <img src="{{ Avatar::create('Élexander Quesada')->toBase64() }}" />
+
+  <v-card max-width="600">
+    <v-card-title>Titulo</v-card-title>
+  </v-card>
 @endsection

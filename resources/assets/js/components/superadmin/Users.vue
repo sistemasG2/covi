@@ -33,10 +33,12 @@
       </v-btn>
     </v-layout>
 
+    <modal-user-view></modal-user-view>
+
     <!-- Loading Screen -->
     <loading-screen v-if="isLoading"></loading-screen>
 
-    <section v-if="toggleViewOptions == 0 && isLoading == false">
+    <section v-if="toggleViewOptions == 0 && isLoading == false && filteredItems.length > 0">
       <v-container class="mt-3 grid-list-sm" fluid>
         <paginate class="layout row wrap" name="users" :list="filteredItems" :per="15">
           <user-card v-for="user in paginated('users')" v-bind:user="user" :key="user.id" :modal="modal" :form="form"></user-card>
@@ -80,6 +82,7 @@
     <no-data v-if="isLoading == false && table.items.length <= 0"></no-data>
 
     <!-- MODALS -->
+
     <modal-user-create v-if="modal.create" :modal="modal" :form="form"></modal-user-create>
     <modal-user-change-password v-if="modal.changePassword" :modal="modal" :form="form"></modal-user-change-password>
     <modal-user-delete v-if="modal.delete" :modal="modal" :form="form"></modal-user-delete>

@@ -26,12 +26,8 @@ Route::put('/usuarios/cambiar-contrasena/{id}', 'superadmin\UsersController@chan
 Route::apiResource('/usuarios', 'superadmin\UsersController');
 
 
-// Route::get('/superadmin/cuentas', 'superadmin\SuperAdminController@accounts');
-// Route::get('/superadmin/dashboard', 'superadmin\SuperAdminController@index');
-// Route::get('/superadmin/perfil', 'superadmin\SuperAdminController@profile');
-// Route::get('/superadmin/reportes', 'superadmin\SuperAdminController@reports');
-// Route::get('/superadmin/soporte', 'superadmin\SuperAdminController@support');
-// Route::get('/superadmin/usuarios', 'superadmin\SuperAdminController@users');
+// Admin Routes
+Route::get('/admin', 'Admin\AdminController@index');
 
 Auth::routes();
 

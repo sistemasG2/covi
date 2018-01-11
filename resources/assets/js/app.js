@@ -34,6 +34,7 @@ Vue.component('superadmin-accounts', require('./components/superadmin/Accounts.v
 Vue.component('user-card', require('./components/superadmin/users/UserCard.vue'));
 Vue.component('users-table', require('./components/superadmin/users/UsersTable.vue'));
 Vue.component('avatar-form-uploader', require('./components/superadmin/users/AvatarFormUploader.vue'));
+Vue.component('modal-user-view', require('./components/superadmin/users/modals/ModalUserView.vue'));
 Vue.component('modal-user-create', require('./components/superadmin/users/modals/ModalUserCreate.vue'));
 Vue.component('modal-user-delete', require('./components/superadmin/users/modals/ModalUserDelete.vue'));
 Vue.component('modal-user-edit', require('./components/superadmin/users/modals/ModalUserEdit.vue'));
