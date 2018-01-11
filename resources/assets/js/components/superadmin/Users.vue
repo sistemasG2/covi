@@ -36,19 +36,10 @@
     <!-- Loading Screen -->
     <loading-screen v-if="isLoading"></loading-screen>
 
-    <!-- Users Card View -->
-    <!-- <section v-if="toggleViewOptions == 0 && isLoading == false">
-      <v-container class="mt-3 grid-list-sm" fluid>
-        <v-layout row wrap>
-          <user-card v-for="user in filteredItems" :user="user" :key="user.id" :modal="modal" :form="form"></user-card>
-        </v-layout>
-      </v-container>
-    </section> -->
-
     <section v-if="toggleViewOptions == 0 && isLoading == false">
       <v-container class="mt-3 grid-list-sm" fluid>
         <paginate class="layout row wrap" name="users" :list="filteredItems" :per="15">
-          <user-card v-for="user in paginated('users')" :user="user" :key="user.id" :modal="modal" :form="form"></user-card>
+          <user-card v-for="user in paginated('users')" v-bind:user="user" :key="user.id" :modal="modal" :form="form"></user-card>
         </paginate>
       </v-container>
       <!-- Pagination -->
@@ -109,7 +100,6 @@ import { Form } from '../../form-handler.js'
 export default {
   data() {
     return {
-      page: 2,
       form: new Form({
         id: '',
         avatar: '',
