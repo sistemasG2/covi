@@ -37,9 +37,9 @@ export default {
     return {
       calendar: new Calendar(),
       reservations: [
-        // new Date(2018,0,4),
-        // new Date(2018,0,8),
-        // new Date(2018,0,29),
+        new Date(2018,0,4),
+        new Date(2018,0,8),
+        new Date(2018,0,29),
       ]
     }
   },
@@ -77,12 +77,12 @@ export default {
       {
         .calendar_dates
         {
-          width: 455px;
+          width: 350px;
 
           &__days_titles
           {
-            width: 65px;
-            height: 65px;
+            width: 50px;
+            height: 50px;
           }
 
           &__date
@@ -91,16 +91,16 @@ export default {
             color: #9e9e9e;
             display: flex;
             font-size: 18px;
-            height: 65px;
+            height: 50px;
             justify-content: center;
-            width: 65px;
+            width: 50px;
 
             &.reserved
             {
               position: relative;
               &:before {
                 border-radius: 50%;
-                border: 2px solid cyan;
+                border: 2px solid lighten(green*2, 30%);
                 content: ' ';
                 position: absolute;
                 top: 50%;
