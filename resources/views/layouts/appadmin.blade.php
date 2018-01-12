@@ -70,46 +70,10 @@
 
             <v-list-tile href="/superadmin/dashboard">
               <v-list-tile-action>
-                <v-icon>fa-dashboard</v-icon>
+                <v-icon>fa-calendar-check-o</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
-                <v-list-tile-title>Dashboard</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-
-            <v-list-tile href="/superadmin/cuentas">
-              <v-list-tile-action>
-                <v-icon>domain</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>Cuentas</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-
-            <v-list-tile href="/superadmin/usuarios">
-              <v-list-tile-action>
-                <v-icon>fa-user-o</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>Usuarios</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-
-            <v-list-tile href="/superadmin/reportes">
-              <v-list-tile-action>
-                <v-icon>fa-file-text-o</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>Reportes</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-
-            <v-list-tile href="/superadmin/soporte">
-              <v-list-tile-action>
-                <v-icon>fa-support</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>Soporte</v-list-tile-title>
+                <v-list-tile-title>Reservas</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
 
@@ -137,7 +101,7 @@
         </v-navigation-drawer>
 
         <v-content>
-          <v-container fluid>
+          <v-container class="full_heigth" fill fluid>
             @yield('content')
           </v-container>
         </v-content>

@@ -28,6 +28,7 @@ Route::apiResource('/usuarios', 'superadmin\UsersController');
 
 // Admin Routes
 Route::get('/admin', 'Admin\AdminController@index');
+Route::get('/admin/reservaciones', 'Admin\AdminController@reservations');
 
 Auth::routes();
 

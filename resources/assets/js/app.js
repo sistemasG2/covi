@@ -45,6 +45,9 @@ Vue.component('account-card', require('./components/superadmin/accounts/AccountC
 Vue.component('account-view', require('./components/superadmin/accounts/ViewAccount.vue'));
 Vue.component('upload-image', require('./components/superadmin/accounts/UploadImage.vue'));
 
+//Admin components
+Vue.component('reservations-calendar', require('./components/admin/reservations/ReservationsCalendar.vue'));
+
 
 
 // const Vuetify = require('vuetify')
@@ -57,6 +60,18 @@ Vue.use(Vuetify)
 
 import VuePaginate from 'vue-paginate'
 Vue.use(VuePaginate)
+
+
+//Vue Moment
+import VueMoment from 'vue-moment'
+
+// Vue Moment Language
+const vueMomentLang = require('moment')
+require('moment/locale/es')
+
+Vue.use(VueMoment, {
+  vueMomentLang
+})
 
 const app = new Vue({
     el: '#app',

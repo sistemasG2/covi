@@ -114,3 +114,96 @@ export class Searchbox {
     return this.items
   }
 }
+
+
+export class Calendar {
+  constructor() {
+    this.now = new Date()
+    this.month = this.now.getMonth()
+    this.year = this.now.getFullYear()
+    this.dayTitles = ['D', 'L', 'K', 'M', 'J', 'V', 'S']
+  }
+
+  daysCount() {
+    let count = new Date(this.year, this.month + 1, 0).getDate()
+    return count
+  }
+
+  getDates() {
+    let prevMonth =
+      (this.month > 0) ? prevMonth = new Date(this.year, this.month, 0) : prevMonth = new Date(this.year-1, 12, 0)
+
+    let nextMonth =
+      (this.month < 11) ? nextMonth = new Date(this.year, this.month + 2, 0) : nextMonth = new Date(this.year+1, 1, 0)
+
+    let initialDay = new Date(this.year, this.month).getDay()
+
+    let weeksCount = (initialDay == 6 && this.daysCount() >= 30) ? 6 : 5
+
+    let daysToFill = (weeksCount == 5) ? 35 - this.daysCount() : 42 - this.daysCount()
+
+    let daysNext = daysToFill - initialDay
+    let daysPrev = daysToFill - daysNext
+
+    let dates = []
+
+    for (let i = daysPrev - 1; i >= 0; i--) {
+      let date = {
+        class: 'prev_month_dates',
+        date: new Date(prevMonth.getFullYear(), prevMonth.getMonth(), prevMonth.getDate() - i)
+      }
+      dates.push(date)
+    }
+
+    for (let i = 0; i < this.daysCount() + daysNext; i++) {
+      let date = {
+        class: (i > this.daysCount()) ? 'next_month_dates' : '',
+        date: new Date(this.year, this.month, i + 1)
+      }
+      dates.push(date)
+    }
+
+    return dates
+  }
+
+  getNameOftheMonth() {
+    let names = [
+      'Enero',
+      'Febrero',
+      'Marzo',
+      'Abril',
+      'Mayo',
+      'Junio',
+      'Julio',
+      'Agosto',
+      'Septiembre',
+      'Octubre',
+      'Noviembre',
+      'Diciembre',
+    ]
+
+    return names[this.month]
+  }
+
+  prevMonth() {
+    if (this.month > 0) {
+      this.month -= 1
+    }
+    else
+    {
+      this.month = 11
+      this.year -= 1
+    }
+  }
+
+  nextMonth() {
+    if (this.month < 11) {
+      this.month += 1
+    }
+    else
+    {
+      this.month = 0
+      this.year += 1
+    }
+  }
+}
